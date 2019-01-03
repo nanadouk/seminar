@@ -21,7 +21,7 @@ The TLS protocol can be splited into two layers. The lowest layer of the TLS is 
 \section{Record Protocol}
 \label{sec:record_protocol}
 
-The connection with two independent channels is established through the TLS Handshake, from the client to the server and in the other direction from the server to the client. The Record Protocol is responsible for the data protection on these channels using the authenticated encryption scheme.
+The connection with two independent channels is established through the TLS Handshake, from the client to the server and in the other direction from the server to the client. The Record Protocol is responsible for the data protection on these channels using the authenticated encryption scheme. The processing of data 
 Firstly the Record Protocol layer receives the data from the application layer. Then it fragments the data to a size appropriate to the cryptographic algorithm. compress or decompress 
 
 
