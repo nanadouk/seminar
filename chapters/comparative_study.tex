@@ -19,9 +19,7 @@ The figure \ref{fig:handshake1_2} shows the process of the full handshake in the
 	\label{fig:handshake1_2}
 \end{figure}
 
-\large{1th round}
-
-Step 1. The 1th round of the handshake begins with the "client hello" message sent from the client to the server. This message includes the following cryptographic information:
+\textbf{Step 1.} The 1th round of the handshake begins with the "client hello" message sent from the client to the server. This message includes the following cryptographic information:
 
 \begin{itemize}
 	\item CipherSuites - encryption algorithms supported by the client
@@ -30,7 +28,7 @@ Step 1. The 1th round of the handshake begins with the "client hello" message se
 	\item session id
 \end{itemize}
 
-Step 2. Then the server responds with "server hello" message. The message consists of the following information:
+\textbf{Step 2.} Then the server responds with "server hello" message. The message consists of the following information:
 
 \begin{itemize}
 	\item CipherSuites chosen by the server from the "client hello" message
@@ -39,24 +37,24 @@ Step 2. Then the server responds with "server hello" message. The message consis
 	\item session id
 \end{itemize}
 
-Step 3. The server sends its X.509 certificate and its public key.
+\textbf{Step 3.} The server sends its X.509 certificate and its public key.
 
-Step 4. This step is needed if the Diffie-Hellmann key exchange algorithm was negotiated between the client and the server at the steps 1 and 2. In this case the server transmits additional key materials in the "server key exchange" message.
+\textbf{Step 4.} This step is needed if the Diffie-Hellmann key exchange algorithm was negotiated between the client and the server at the steps 1 and 2. In this case the server transmits additional key materials in the "server key exchange" message.
 
-Step 5. With the "server hello done" message the server notify the client that it finished his steps and wait on the answer of the client.
+\textbf{Step 5.} With the "server hello done" message the server notify the client that it finished his steps and wait on the answer of the client.
 
-2th round.
+\textbf{Step 6.} The client verifies the certificate sent by the server. Then it transmit to the server its key material in the key exchange message. 
+At this point the client and the server can compute pre-master secret from key exchange messages. Using the pre-master secret with the nonces sent in the steps 1 and 2 they can generate the master key. Afterwards the client and the server derive a set of session keys from the master key that will be used to symmetrically encrypt the data.
 
-(todo: check if correct) Step 6. The client verifies the certificate sent by the server. Then it generate a random value called "pre-master secret" and transmits it to the server encrypted with the public key of the server from the step 3.
-Afterwards the client and the server can generate the master key on the basis of the pre-master key from the step 6 and random values fromt the steps 1 and 2. Then they derive the set of session keys from the master key that will be used to symmetrically encrypt the data.
+\textbf{Step 7.} Wenn the client derived the session key it notify the server about the change of the keys for the secure communication.
 
-Step 7. Wenn the client derived the session key it notify the server about the change of the keys for the secure communication.
+\textbf{Step 8.} With the message "Finished" the client signals to the server that it completed its tasks and is ready for the communication. This message includes MAC of the messages from the previous steps using the calculated master key, so that the server can verify integrity of the handshake's messages.
 
-Step 8. With the message "Finished" the client signals to the server that it completed its tasks and is ready for the communication. This message includes MAC of the messages from the previous steps using the calculated master key, so that the server can verify integrity of the handshake's messages.
+\textbf{Step 9-10.} The server makes the same steps as the client in the steps 7-8 to switch the keys for the symmetric encryption and notifies the client with the message "finished". This message includes the MAC of the whole handshake log except "change cipher spec" messages from the steps 7 and 9. \cite{sslstore:handshake}\cite{Hassenstein}
 
-Step 9-10. The server makes the same steps as the client in the steps 7-8 to switch the keys for the symmetric encryption and notifies the client with the message "finished". This message includes the MAC of the whole handshake log except "change cipher spec" messages from the steps 7 and 9. \cite{sslstore:handshake}\cite{Hassenstein}
+The almost whole communication in the handshake protocol flows in the clear text. Only beginning from the step 8, when the client finished his preparation for the secure communication, the next messages of the handshake will be encrypted.
 
-\subsection{Handshake in TLS 1.3}
+\subsection{TLS 1.3 handshake}
 \label{subsec:handshake1_3}
 
 \begin{figure}[H]
@@ -66,14 +64,14 @@ Step 9-10. The server makes the same steps as the client in the steps 7-8 to swi
 	\label{fig:handshake1_3}
 \end{figure}
 
-Step 1. The TLS 1.3 handshake begins with the "client hello" message as in the TLS 1.2 handshake. In addition the client sends in the same message the following information:
+\textbf{Step 1.} The TLS 1.3 handshake begins with the "client hello" message as in the TLS 1.2 handshake. In addition the client sends in the same message the following information:
 
 \begin{itemize}
 	\item the list of the supported CypherSuites
 	\item key share entries consisting of a named (EC)DH group and an ephemeral public key
 \end{itemize}
 
-Step 2. The server respondes with the "server hello" message. In addition it sends the following information:
+\textbf{Step 2.} The server respondes with the "server hello" message. In addition it sends the following information:
 
 \begin{itemize}
 	\item chosen CypherSuite
@@ -85,7 +83,9 @@ Step 2. The server respondes with the "server hello" message. In addition it sen
 
 In case if the server does not support any of the proposed groups the server will request retrying the handshake or abort the connection with a fatal handshake\_failure alert.
 
-Step 3. The client checks the certificate of the server. Generates keys from the key share of the server from the previous step. Afterwards the client sends the "client finished" message. \cite{Hassenstein}\cite{sslstore:handshake}
+\textbf{Step 3.} The client checks the certificate of the server. Generates keys from the key share of the server from the previous step. Afterwards the client sends the "client finished" message. \cite{Hassenstein}\cite{sslstore:handshake}
+
+After the "server hello" message all handshake messages will be encrypted.
 
 \subsection{Discussion of TLS 1.2 and 1.3 full handshakes (todo: change title)}
 \label{subsec:comparison_handshake}
@@ -96,14 +96,16 @@ The "server key exchange" and "client key exchange" messages have been removed f
 
 Furthermore the ChangeCipherSpec protocol has been removed in the 1.3 version. 
 
-As a consequence of this the TLS 1.3 handshake involves only one round trip. This changes results in reduced latency almost in half. As mentioned in the blog of The SSL Store a delay of half a second results in 20\% traffic decline \cite{sslstore:handshake}.
+As a consequence of this the TLS 1.3 handshake involves only one round trip. This changes results in reduced latency almost in half. As mentioned in the blog of The SSL Store a delay of half a second results in 20\% traffic decline \cite{sslstore:handshake}. That is why the performance improvement of the TLS protocol is a crucial change in the protocol.
 
-
+Moreover the privace of the handshake protocol has been improved. In the 1.2 release of the TLS protocol almost all handshake messages are sent in the clear text except the last steps after the client sends "finished" message. On the contrary in the 1.3 version all information will be encrypted as early as possible, namely after "server hello" message. 
 
 \section{Session resumption}
 \label{sec:resumption}
 
-The full handshake can take time, increase server load and cause connection latency. To improve performance the session resumption can be used. With the "client hello" and "server hello" messages the session id can be saved and used to resume previously established TLS session. Under this session id the client and the server store the master key and other detail of the connection. In the next session they can transmit this session id and thus reuse previous connection parameters. The following session data can be cached: master secret, protocol version, ciphersuits, compression method, certificate.
+The full handshake can take time, increase server load and cause connection latency. To improve performance the session resumption can be used. With the "client hello" and "server hello" messages the session id can be saved and used to resume previously established TLS session. Under this session id the client and the server store the master key and other details of the connection. In the next session they can transmit the session id and thus reuse past connection parameters. The following session data can be cached: master secret, protocol version, ciphersuits, compression method, certificate.
+
+
 
 
 
@@ -113,10 +115,11 @@ The full handshake can take time, increase server load and cause connection late
 \begin{table}[H]
 	\centering
 		\begin{tabular}{lll} \toprule
-			\textbf{Attribute} & \textbf{TLS 1.2} & \textbf{TLS 1.3} \\ \midrule
+			\textbf{Characteristic} & \textbf{TLS 1.2} & \textbf{TLS 1.3} \\ \midrule
 			Round trip time of the full handshake & 2-RTT & 1-RTT \\ \midrule
+			Encryption of handshake messages& at the end, & at the beginning, \\ 
+			& after "client finished" message & after "server hello" message \\ \midrule
 			Speed of the full handshake & 0.25-0.5 s & 0.2-0.3 s\\ \midrule
-			 &  &  \\ \bottomrule
 		\end{tabular}
 	\caption{Comparison of TLS 1.2 and TLS 1.3}
 	\label{tab:comparison}
