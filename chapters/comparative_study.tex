@@ -145,7 +145,7 @@ There are differences how the sesssion resumption works in the release 1.3 of TL
 
 A new method to resume the session is implemented in TLS 1.3. It is called pre-shared key (PSK) mode and replaces the usage of the session identifier or session ticket. An PSK identity is sent to the client by the server after the full handshake is completed. The PSK identity is a blob file containing database lookup keys or self-encrypted and self-authencitcated values. It corresponds to a key derived from the handshake.
 
-A PSK, that has been created during the handshake of the prevoius connection, can be presented by the client on the next visit. If it is needed to resume the session the client transmits PSK identities to the server. Then the server responds with the chosen PSK identity in the "server hello" message. The security context of this identity will be used in the new connection and the unique key derived from the previous connection can be used in the new one.
+A PSK, that has been created during the handshake of the prevoius connection, can be presented by the client on the next visit. If it is needed to resume the session the client transmits PSK identities to the server. Then the server responds with the chosen PSK identity in the "server hello" message. The security context of this identity will be used in the new connection and the unique key derived from the previous connection can be used in the new one. \cite{ldapwiki:resumption}
 
 \subsection{Discussion of the session resumption in TLS 1.2 and 1.3}
 \label{subsec:discussion_resumption}
