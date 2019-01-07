@@ -25,6 +25,7 @@ The TLS Protocol can be split into two layers. The lowest layer of the TLS is th
 
 The connection with two independent channels is established through the TLS Handshake, from the client to the server and in the other direction from the server to the client. The Record Protocol is responsible for the data protection on these channels using the authenticated encryption scheme.
 
+<<<<<<< Updated upstream
 The processing of data:              
 Firstly the Record Protocol layer receives the data from the application layer. Then it fragments the data to a size appropriate to the cryptographic algorithm. 
 The next step is compression (optionally, if specified). Then the message authentication code over the compressed data will be computed.
@@ -51,6 +52,8 @@ The peer will be noticed by the alert messages about the change in status or err
 
 The full list with the alerts, to notify the peer of normal or error condition, is declared in RFC2246 \cite{rfc2246}. \cite{W.Stalling} \cite{ms:overview}
 
+=======
+>>>>>>> Stashed changes
 \section{Benefits/Drawbacks, Properties, Characteristic}
 \label{sec:introduction_suggestions}
 
