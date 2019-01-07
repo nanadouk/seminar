@@ -33,7 +33,16 @@ To ensure that the data were not altered during the transmission, the receiver c
 
 \section{Handshake Protocol}
 \label{sec:handshake_protocol}
- A handshake is an automated process of negotiation between communicatiors. The TLS Handshake Protocol is used to negotiate session information between the client and the server. For example the client and the server must agree on the version of the TLS, verifying the certificates if required and have to choose the ciphersuite. 
+ A handshake is an automated process of negotiation between communicatiors. The TLS Handshake Protocol is the most widely-used  AKE Protocol to negotiate session information between the client and the server. 
+ After the etablishment of the TCP connection between a client and a serverer the handshake protocol will trigger. It aims to:  - authenticate the server and eventually the client
+ -they also have to agree on the version of the TLS
+ -agreement of the ciphersuites
+ -arrange the extension
+ -derivation authenticated encryption key for the connection
+- if required the verifying of the certificates
+ After the negotioation the agreements have to be assured.
+
+Due to protecting data these negotiated and defined parameter are then used by the record layer.
 
 \cite{ms:overview}
 \cite{ms:handshake}
@@ -55,9 +64,5 @@ The full list with the alerts, to notify the peer of normal or error condition, 
 \section{Benefits/Drawbacks, Properties, Characteristic}
 \label{sec:introduction_suggestions}
 
-% \begin{itemize}
-%	\item Create a BFH Style Files
-%	\item Template for the Compilation of presentations with \LaTeX{}
-% \end{itemize}
 
 
