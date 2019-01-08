@@ -3,90 +3,35 @@
 
 Transport Layer Security (TLS) Protocol is a cryptographic protocol that provides secure transport connection between applications over a computer network, e.g. web server and web browser. 
  Using TLS prevents eavesdropping, tampering and message forgery. It provides privacy and data integrity between communicating applications. The protocol secures transmitted data using encryption. Secure communication with Authenticated Key Etablishment (AKE) and secure channel with Authenticated Encryption (AE). 
- Using Datagram TLS (DTLS) the statless TLS is feasible. It offers server and, optionally, client authentication to confirm the identities of parties involved in the communication. 
+ Using Datagram TLS (DTLS) the stateless TLS is feasible. It offers server and, optionally, client authentication to confirm the identities of parties involved in the communication. 
  
- Further, the integrity check value implemented in the protocol provides integrity for the transfered data. TLS is also known or referred to Secure Socket Layer (SSL), its predecessor. 
+ Further, the integrity check value implemented in the protocol provides integrity for the transferred data. TLS is also known or referred to as Secure Socket Layer (SSL), its predecessor. 
  
-To using TLS it is required, that all communicators know that the other is supporting TLS.
+To use TLS all communicators must know that the other is supporting TLS.
 
-TLS 1.2 was defined in RFC 5246 in August 2008, its successor TLS 1.3 is defined in RFC 8446 in August 2018.
+TLS 1.2 was defined in RFC 5246 in August 2008. Its successor TLS 1.3 is defined in RFC 8446 in August 2018.
  \cite{RFC5246}
 
 \section{Structure of the TLS Protocol}
 \label{sec:stucture}
 
-The TLS Protocol is layered between the Application layer and the TCP/IP layer according to the Internet Model (or between Session and Transport layers according to the OSI Model), where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols, such as HTTP, FTP, SMTP, POP3 and other. The protocols using TLS become respectively HTTPS, FTPS, SMTPS, POP3S and so on.
+The TLS Protocol is layered between the Application layer and the TCP/IP layer according to the Internet Model (or between Session and Transport layers according to the OSI Model), where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols, such as HTTP, FTP, SMTP, POP3. The protocols using TLS become respectively HTTPS, FTPS, SMTPS, POP3S and so on.
 
-The TLS Protocol can be split into two layers. The lowest layer of the TLS is the Record Protocol. The upper layer is the Handshake layer, that consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol, Alert Protocol. The ChangeCipherSpec protocol has been removed from the release 1.3 of TLS. Figure \ref{fig:tls_structure} illustrates the srtucture of the TLS 1.2 Protocol. 
+The TLS Protocol can be split into two layers. The lower layer of the TLS is the Record Protocol. The upper layer is the Handshake layer which consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol and Alert Protocol. Figure \ref{fig:tls_structure} illustrates the structure of the TLS Protocol. 
 
 
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=1]{images/tls_structure.jpg}
-	\caption{TLS 1.2 Protocol Structure \cite{ms:overview}}
+	\caption{TLS 1.2 Protocols Structure \cite{ms:overview}}
 	\label{fig:tls_structure}
 \end{figure}
 
-\section{Handshake Protocol}
-\label{sec:handshake_protocol}
-A handshake is an automated process of negotiation between communicators. Especially the TLS Handshake Protocol is the most widely-used  AKE Protocol to negotiate session information between the client and the server. 
-After the establishment of the TCP connection between a client and a serverer the handshake protocol will be triggered. 
-Thus, the purpose of this protocol is to negotiate and define these parameters:
- 
- \begin{itemize}
-\item to authenticate the server and optionally also the client, but typically it is only the server which is authenticated
- \item to agree on the version of the TLS
- \item to have an agreement of the ciphersuites
- \item to arrange with the extension
- \item to do the derivation authenticated encryption key for the connection
- \item if required to verify the certificates
- \item finally these all points also have to be assured between each communicators
-\end{itemize}
-
-Due to protecting data these parameters are then used by the record layer. As mentioned usually it is only the server which is authenticated, but once a secure channel is etablished, the mutual authenticatios could also be done. This is allowed with the use of renegotation, but for that it requires a public key infrastructure (PKI). 
-\cite{ms:overview}
-\cite{ms:handshake}
-
-\section{ChangeCipherSpec Protocol}
-\label{sec:changeciphfer_protocol}
-This protocol is responsible to inform about a change of the keys to a new set of keys. It means that a transition in ciphering would be singaled through this protocol. This message is either send by the server and client. 
-
-This protocol trigger a instruction to the record layer.
-
-The keying material is raw data which is used for encryption between the client and server. On the basis of the exchanged information from the handshake protocol, then the keys will be computed.
-The ChangeCipherSpec Protocol consists of a byte with value 1.
-The ChangeCipherSpec Protocol includes also a message to inform other parties in the SSL/TLS session about the change.   \cite{ms:overview}
-
-The ChangeCipherSpec protocol is removed from the 1.3 version of the TLS protocol.
-
-\section{Alert Protocol}
-\label{sec:alert_protocol}
-The peer will be noticed by the alert messages about the change in status or error condition (fatal/warning).These messages are also compressed and encrypted. Due to a fatal error the session will close immediately.\\\\ 
-Fatal:
-\begin{itemize}
-	\item unexpected\_message
-	 \item bad\_record\_MAC
-	 \item handshake\_failure 
-	 \item et al.
-
-	\end{itemize}
-	
-Warning:
-\begin{itemize}
-\item close\_notify
-\item unsupported\_certificates
-\item certificate\_expired
-\item et al.
-
-
-\end{itemize}
-
-The full list with the alerts, to notify the peer of normal or error condition, is declared in RFC2246 \cite{rfc2246}. All these alerts consists of 2 bytes. The first byte defines the kind (eg. fatal or warning) and the second says what is happenend \cite{W.Stalling} \cite{ms:overview}
 
 \section{Record Protocol}
 \label{sec:record_protocol}
 
-The connection with two independent channels is established through the TLS Handshake, from the client to the server and in the other direction from the server to the client. The Record Protocol is responsible for the data protection on these channels using the authenticated encryption scheme.\\
+The connection of two independent channels is established through the TLS Handshake, from the client to the server and in the other direction from the server to the client. The Record Protocol is responsible for the data protection on these channels using the authenticated encryption scheme.\\
 The responsibilities of the Record Protocol are:
 \begin{itemize}
 	\item fragmentation
@@ -94,7 +39,7 @@ The responsibilities of the Record Protocol are:
 	\item application of MAC and encryption
 	\item transmisson 
 \end{itemize}
-But the tasks/responsiblity depends also on the parameters of the keys. How the keys were set during the handshake protocol. \\
+But the tasks/responsiblies depend also on the parameters of the keys, namely how the keys were set during the handshake protocol. \\
 
 The processing of data is illustrated and described below:      
 
@@ -105,11 +50,12 @@ The processing of data is illustrated and described below:
 	\label{fig:tls_recordprotocol}
 \end{figure}
 
-Firstly the Record Protocol layer receives the data from the application layer. Then it fragments the data to a size appropriate to the cryptographic algorithm. 
-The next step is the compression, which is done if specified. The compression algorithm would then be defined in the current session state and translate the date to a TLSCompressed structur.
+First the Record Protocol layer receives the data from the application layer. Then it fragments the data to a size appropriate for the cryptographic algorithm. 
+The next step is the compression, which is done if specified. The compression algorithm would then be defined in the current session state and would translate the date to a TLSCompressed structure.
  
-Then the message authentication code over the compressed data will be computed.
-To ensure that the data were not altered during the transmission, the MAC value is added. So the receiver can check the incoming MAC value with the computed one are matching. Thus, the integrity and confidentiality are ensured.
+Subsequently the message authentication code over the compressed data would be computed.
+To ensure that the data were not altered during the transmission, the MAC value is added. So the receiver can check if the incoming MAC value and the computed one 
+match. Thus, the integrity and confidentiality are ensured.
 
-As a hint, the first handshake is neither secured by a MAC nor encrypted. Because this is the initial value for the keys, how they are first set. After the first handshake, these parameter are set and therefore secured and encrypted.
+As a hint, the first handshake is neither secured by a MAC nor encrypted. Because this is the initial value for the keys, it is how they are first set. After the first handshake these parameters are set and therefore secured and encrypted.
 \cite{ms:Record}
