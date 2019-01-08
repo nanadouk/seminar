@@ -17,52 +17,21 @@ TLS 1.2 was defined in RFC 5246 in August 2008, its successor TLS 1.3 is defined
 
 The TLS Protocol is layered between the Application layer and the TCP/IP layer according to the Internet Model (or between Session and Transport layers according to the OSI Model), where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols, such as HTTP, FTP, SMTP, POP3 and other. The protocols using TLS become respectively HTTPS, FTPS, SMTPS, POP3S and so on.
 
-The TLS Protocol can be split into two layers. The lowest layer of the TLS is the Record Protocol. The upper layer is the Handshake layer, that consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol, Alert Protocol. Figure \ref{fig:tls_structure} illustrates the srtucture of the TLS Protocol. 
+The TLS Protocol can be split into two layers. The lowest layer of the TLS is the Record Protocol. The upper layer is the Handshake layer, that consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol, Alert Protocol. The ChangeCipherSpec protocol has been removed from the release 1.3 of TLS. Figure \ref{fig:tls_structure} illustrates the srtucture of the TLS 1.2 Protocol. 
 
 
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=1]{images/tls_structure.jpg}
-	\caption{TLS Protocols Structure \cite{ms:overview}}
+	\caption{TLS 1.2 Protocol Structure \cite{ms:overview}}
 	\label{fig:tls_structure}
 \end{figure}
 
-\section{Record Protocol}
-\label{sec:record_protocol}
-
-The connection with two independent channels is established through the TLS Handshake, from the client to the server and in the other direction from the server to the client. The Record Protocol is responsible for the data protection on these channels using the authenticated encryption scheme.\\
-The responsibilities of the Record Protocol are:
-\begin{itemize}
-	\item fragmentation
-	\item compression
-	\item application of MAC and encryption
-	\item transmisson 
-\end{itemize}
-But the tasks/responsiblity depends also on the parameters of the keys. How the keys were set during the handshake protocol. \\
-
-The processing of data is illustrated and described below:      
-
-\begin{figure}[H]
-	\centering
-		\includegraphics[scale=0.5]{images/tls_recordprotocol.png}
-	\caption{TLS Record Protocol}
-	\label{fig:tls_recordprotocol}
-\end{figure}
-
-Firstly the Record Protocol layer receives the data from the application layer. Then it fragments the data to a size appropriate to the cryptographic algorithm. 
-The next step is the compression, which is done if specified. The compression algorithm would then be defined in the current session state and translate the date to a TLSCompressed structur.
- 
-Then the message authentication code over the compressed data will be computed.
-To ensure that the data were not altered during the transmission, the MAC value is added. So the receiver can check the incoming MAC value with the computed one are matching. Thus, the integrity and confidentiality are ensured.
-
-As a hint, the first handshake is neither secured by a MAC nor encrypted. Because this is the initial value for the keys, how they are first set. After the first handshake, these parameter are set and therefore secured and encrypted.
-\cite{ms:Record}
-
 \section{Handshake Protocol}
 \label{sec:handshake_protocol}
- A handshake is an automated process of negotiation between communicators. Especially the TLS Handshake Protocol is the most widely-used  AKE Protocol to negotiate session information between the client and the server. 
- After the establishment of the TCP connection between a client and a serverer the handshake protocol will be triggered. 
- Thus, the purpose of this protocol is to negotiate and define these parameters:
+A handshake is an automated process of negotiation between communicators. Especially the TLS Handshake Protocol is the most widely-used  AKE Protocol to negotiate session information between the client and the server. 
+After the establishment of the TCP connection between a client and a serverer the handshake protocol will be triggered. 
+Thus, the purpose of this protocol is to negotiate and define these parameters:
  
  \begin{itemize}
 \item to authenticate the server and optionally also the client, but typically it is only the server which is authenticated
@@ -98,7 +67,7 @@ Fatal:
 	\item unexpected\_message
 	 \item bad\_record\_MAC
 	 \item handshake\_failure 
-	 \item ...
+	 \item et al.
 
 	\end{itemize}
 	
@@ -107,15 +76,40 @@ Warning:
 \item close\_notify
 \item unsupported\_certificates
 \item certificate\_expired
-\item ...
+\item et al.
 
 
 \end{itemize}
 
 The full list with the alerts, to notify the peer of normal or error condition, is declared in RFC2246 \cite{rfc2246}. All these alerts consists of 2 bytes. The first byte defines the kind (eg. fatal or warning) and the second says what is happenend \cite{W.Stalling} \cite{ms:overview}
 
-\section{Benefits/Drawbacks, Properties, Characteristic}
-\label{sec:introduction_suggestions}
+\section{Record Protocol}
+\label{sec:record_protocol}
 
+The connection with two independent channels is established through the TLS Handshake, from the client to the server and in the other direction from the server to the client. The Record Protocol is responsible for the data protection on these channels using the authenticated encryption scheme.\\
+The responsibilities of the Record Protocol are:
+\begin{itemize}
+	\item fragmentation
+	\item compression
+	\item application of MAC and encryption
+	\item transmisson 
+\end{itemize}
+But the tasks/responsiblity depends also on the parameters of the keys. How the keys were set during the handshake protocol. \\
 
+The processing of data is illustrated and described below:      
 
+\begin{figure}[H]
+	\centering
+		\includegraphics[scale=0.5]{images/tls_recordprotocol.png}
+	\caption{TLS Record Protocol}
+	\label{fig:tls_recordprotocol}
+\end{figure}
+
+Firstly the Record Protocol layer receives the data from the application layer. Then it fragments the data to a size appropriate to the cryptographic algorithm. 
+The next step is the compression, which is done if specified. The compression algorithm would then be defined in the current session state and translate the date to a TLSCompressed structur.
+ 
+Then the message authentication code over the compressed data will be computed.
+To ensure that the data were not altered during the transmission, the MAC value is added. So the receiver can check the incoming MAC value with the computed one are matching. Thus, the integrity and confidentiality are ensured.
+
+As a hint, the first handshake is neither secured by a MAC nor encrypted. Because this is the initial value for the keys, how they are first set. After the first handshake, these parameter are set and therefore secured and encrypted.
+\cite{ms:Record}
