@@ -151,7 +151,7 @@ The client can transmit the data to the server immediately in the first step tog
 \subsection{Discussion of the session resumption in TLS 1.2 and 1.3}
 \label{subsec:discussion_resumption}
 
-Though the performance of the session resumtion in TLS 1.2 is very fast, it can lead to some security problems. Using the same session id during the resumtion the same master secret is used. In case compromised master key all resumed session will be revealed.
+Though the performance of the session resumtion in TLS 1.2 is very fast, it can lead to some security problems. Using the same session id during the resumtion the same master secret is used. In case of compromised master key all resumed session will be revealed.
 
 Using 0-RTT handshake in TLS 1.3 does not provide perfect forward secrecy. It does also not protect against replay attack in the contrary to 1-RTT where the server transmits a random value in each handshake.
 
@@ -254,7 +254,7 @@ The whole list of used algorithms in the release 1.3 is shown in Table \ref{tab:
 \section{Connection renegotiation}
 \label{sec:comparison_renegotiation}
 
-\section{Comparison TLS 1.2 vs 1.3}
+\section{Comparison: TLS 1.2 vs 1.3}
 \label{sec:comparison}
 
 Table \ref{tab:comparison} illustrates the short comparison of the both versions of TLS.
@@ -263,7 +263,7 @@ Table \ref{tab:comparison} illustrates the short comparison of the both versions
 	\centering
 		\begin{tabular}{lll} \toprule
 			\textbf{Characteristic} & \textbf{TLS 1.2} & \textbf{TLS 1.3} \\ \midrule
-			Round trip time of the full handshake & 2-RTT & 1-RTT \\ \midrule
+			Round trip time of the full handshake & 2-\gls{rtt} & 1-RTT \\ \midrule
 			Encryption of handshake messages & at the end, & at the beginning, \\ 
 			& from "client finished" message & after "server hello" message \\ \midrule
 			Performance of the full handshake & 0.25-0.5 s & 0.2-0.3 s\\ \midrule
