@@ -145,20 +145,28 @@ There are differences how the sesssion resumption works in the release 1.3 of TL
 
 A new method to resume the session is implemented in TLS 1.3. It is called pre-shared key (PSK) mode and replaces the usage of the session identifier or session ticket. An PSK identity is sent to the client by the server after the full handshake is completed. The PSK identity is a blob file containing database lookup keys or self-encrypted and self-authencitcated values. It corresponds to a key derived from the handshake.
 
-A PSK, that has been created during the handshake of the prevoius connection, can be presented by the client on the next visit. If it is needed to resume the session the client transmits PSK identities to the server. Then the server responds with the chosen PSK identity in the "server hello" message. The security context of this identity will be used in the new connection and the unique key derived from the previous connection can be used in the new one. \cite{ldapwiki:resumption}
+A PSK, that has been created during the handshake of the prevoius connection, can be presented by the client on the next visit. If it is needed to resume the session the client transmits PSK identities to the server. Then the server responds with the chosen PSK identity in the "server hello" message. The security context of this identity will be used in the new connection and the unique key derived from the previous connection can be used in the new one. 
+The client can transmit the data to the server immediately in the first step together with the PSK. The data will be encrypted with the key derived from this PSK.\cite{ldapwiki:resumption}
 
 \subsection{Discussion of the session resumption in TLS 1.2 and 1.3}
 \label{subsec:discussion_resumption}
 
+Though the performance of the session resumtion in TLS 1.2 is very fast, it can lead to some security problems. Using the same session id during the resumtion the same master secret is used. In case compromised master key all resumed session will be revealed.
+
+Using 0-RTT handshake in TLS 1.3 does not provide perfect forward secrecy. It does also not protect against replay attack in the contrary to 1-RTT where the server transmits a random value in each handshake.
+
+
 \section{Cipher suites}
 \label{sec:comparison_ciphersuits}
+
+A ciphersuite contains of the key exchange and authentication algorithms for the handshake, encryption and message authentication code (MAC) algorithm for the record protocol. The ciphersuite contains different combinations of these algorithms.
 
 \subsection{Cipher suites in TLS 1.2}
 \label{subsec:ciphersuits1_2}
 
-Cipher suits for key exchange and authentication:
+In the following the ciphersuites for key exchange and authentication in TLS 1.2 are described.
 
-\textbf{TLS\_RSA (Static RSA)} \\
+\subsubsection*{TLS\_RSA (Static RSA)} 
 The key exchange is based on the key transport with RSA public-private keys.
 If this cipersuite is used the following computations and communications are made during the handshake:
 \begin{itemize}
@@ -171,7 +179,7 @@ If this cipersuite is used the following computations and communications are mad
 The keyEncipherment option must be enabled in the key usage extension of the certificate of the server.
 This ciphersuite does not offer perfect forward secrecy. If an adversary gets the private key of the server, he can decrypt the pre-master sercret from the client, compute all session keys and decrypt the whole communication with them.
 
-\textbf{DH\_RSA/DH\_DSS} \\
+\subsubsection*{DH\_RSA/DH\_DSS}
 The fixed Diffie-Hellman is used for the key exchange. The certificate of the server contains the DH public key and signed with RSA or DSS.
 The keyAgreement flag must be enabled in the key usage extension of the certificate.
 
@@ -183,7 +191,7 @@ The following computations are made during the handshake:
 	\item Both parties derive the master secret from the pre-master secret and a set of session keys.
 \end{itemize}
 
-\textbf{DHE\_RSA/DHE\_DSS} \\
+\subsubsection*{DHE\_RSA/DHE\_DSS}
 The key exchange is based on the Ephemeral Diffie-Hellman, and the server authentication - on the RSA/DSS signature.
 
 The following computations are made during the handshake:
@@ -197,7 +205,7 @@ The following computations are made during the handshake:
 
 The digitalSignature flag must be enabled in the key usage extension of the servers certificate.
 
-\textbf{ECDHE\_RSA} \\
+\subsubsection*{ECDHE\_RSA}
 The key exchange is based on the Ephemeral Diffie-Hellman using elliptic curves, and the server authentication - on the RSA/DSS signature.
 
 The following computations are made during the handshake:
@@ -211,7 +219,7 @@ The following computations are made during the handshake:
 
 The digitalSignature flag must be enabled in the key usage extension of the servers certificate.
 
-\textbf{DH\_anon} \\
+\subsubsection*{DH\_anon}
 The key exchange is based on the Anonymous Diffie-Hellman. In this case neither the server nor the client is authenticated, the both parties remain anonymous. But the communication with this ciphersuite is culnerable to the man-in-the-middle attacks.
 
 The following computations are made during the handshake:
@@ -230,11 +238,15 @@ Cipher suits for symmetric encryption:
 \subsection{Cipher suites in TLS 1.3}
 \label{subsec:ciphersuits1_3}
 
-Cipher suits for key exchange and authentication:
-For the key exchange in TLS 1.3 only DHE and ECDHE are used.
+The ciphersuite concept has been changed to separate the authentication and key exchange mechanisms.
+For the key exchange in TLS 1.3 only DHE and ECDHE are used providing the perfect forward secrecy. Five elliptic curve groups and five DHE groups from Galois field are predefined, that eliminites the risk of the unsecure implementation of TLS by the administrators and developers.
 
-Cipher suit for symmetric encryption:
-AEAD
+The following signature algorithms remain: EdDSA (Edwards-curve Digital Signature Algorithm),
+ECDSA (Elliptic Curve Digital Signature Algorithm) and RSA.
+
+The list of supported symmetric algorithms has been reduced to Authenticated Encryption with Associated Data (AEAD) algorithms.
+The weak cryptographic algorithms has been deprecated, such that using static RSA in the key exchange, RC4 stream cipher, MD5 and SHA-1 hash functions. The compresson of the plaintext bevor the applying of MAC is removed.
+The whole list of used algorithms in the release 1.3 is shown in Table \ref{tab:comparison}.
 
 \section{Key derivation funcitons}
 \label{sec:comparison_kdf}
@@ -258,13 +270,24 @@ Table \ref{tab:comparison} illustrates the short comparison of the both versions
 			Round trip time of the handshake & 1-RTT & 0-RTT \\ 
 			for session resumption \\ \midrule
 			Session resumption method & session id or session ticket & pre-shared key identity \\ \midrule
-			Cipher suits for key exchange and authentication & TLS\_RSA (static RSA) \\
-			(handshake protocol) & DH\_RSA/DH\_DSS \\ 
-			& DHE\_RSA/DHE\_DSS \\
-			& DH\_anon \\
-			& ECDHE\_RSA \\ \midrule
-			Cipher suits for symmetric encryption & & Authenticated Encryption with \\  
-			(record protocol) & & Associated Data (AEAD) \\ \midrule
+			Key exchange algorithms & RSA & DHE\\ 
+			& DH/DHE & ECDHE\\
+			& ECDH \\
+			& Secure Remote Password \\
+			& Pre-shared key \\ \midrule
+			Signature algorithms & RSA & RSA\\
+			& DSS & ECDSA\\
+			& ECDSA & EdDSA \\ \midrule
+			Symmetric encryption algorithms & AES GSM, CCM, CBC  & AES GCM\\
+			& ChaCha20-Poly1305 & AES CCM \\
+			& 3DES & ChaCha20-Poly1305 \\
+			& RC4 \\
+			& Camellia et al.\\ \midrule
+			MAC algorithms & MD5 & ???HKDF\\
+			& SHA hash functions \\ \midrule
+			Compression & Yes & No \\ \midrule
+			Renegotiation & Yes & No \\ \midrule
+			
 
 		\end{tabular}
 	\caption{Comparison of TLS 1.2 and TLS 1.3}
