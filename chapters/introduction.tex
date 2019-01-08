@@ -2,10 +2,10 @@
 \label{chap:introduction}
 
 Transport Layer Security (TLS) Protocol is a cryptographic protocol that provides secure transport connection between applications over a computer network, e.g. web server and web browser. 
- Using TLS prevents eavesdropping, tampering and message forgery. It provides privacy and data integrity between communicating applications. The protocol secures transmitted data using encryption. Secure communication with Authenticated Key Etablishment (AKE) and secure channel with Authenticated Encryption (AE). 
- Using Datagram TLS (DTLS) the stateless TLS is feasible. It offers server and, optionally, client authentication to confirm the identities of parties involved in the communication. 
+Using TLS prevents eavesdropping, tampering and message forgery. It provides privacy and data integrity between communicating applications. The protocol secures transmitted data using encryption. Secure communication with Authenticated Key Etablishment (AKE) and secure channel with Authenticated Encryption (AE). 
+Using Datagram TLS (DTLS) the stateless TLS is feasible. It offers server and, optionally, client authentication to confirm the identities of parties involved in the communication. 
  
- Further, the integrity check value implemented in the protocol provides integrity for the transferred data. TLS is also known or referred to as Secure Socket Layer (SSL), its predecessor. 
+Further, the integrity check value implemented in the protocol provides integrity for the transferred data. TLS is also known or referred to as Secure Socket Layer (SSL), its predecessor. 
  
 To use TLS all communicators must know that the other is supporting TLS.
 
@@ -17,16 +17,69 @@ TLS 1.2 was defined in RFC 5246 in August 2008. Its successor TLS 1.3 is defined
 
 The TLS Protocol is layered between the Application layer and the TCP/IP layer according to the Internet Model (or between Session and Transport layers according to the OSI Model), where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols, such as HTTP, FTP, SMTP, POP3. The protocols using TLS become respectively HTTPS, FTPS, SMTPS, POP3S and so on.
 
-The TLS Protocol can be split into two layers. The lower layer of the TLS is the Record Protocol. The upper layer is the Handshake layer which consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol and Alert Protocol. Figure \ref{fig:tls_structure} illustrates the structure of the TLS Protocol. 
+The TLS Protocol can be split into two layers. The lower layer of the TLS is the Record Protocol. The upper layer is the Handshake layer which consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol and Alert Protocol. The ChangeCipherSpec protocol has been removed from the release 1.3 of TLS. Figure \ref{fig:tls_structure} illustrates the structure of the TLS Protocol. 
 
 
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=1]{images/tls_structure.jpg}
-	\caption{TLS 1.2 Protocols Structure \cite{ms:overview}}
+	\caption{TLS 1.2 Protocol Structure \cite{ms:overview}}
 	\label{fig:tls_structure}
 \end{figure}
 
+\section{Handshake Protocol}
+\label{sec:handshake_protocol}
+ A handshake is an automated process of negotiation between communicators. The TLS Handshake Protocol is the most widely-used  AKE Protocol to negotiate session information between the client and the server. 
+ After the establishment of the TCP connection between a client and a server the handshake protocol will be triggered. 
+ Thus, the purpose of this protocol is to negotiate and define these parameters:
+ 
+ \begin{itemize}
+\item to authenticate the server and optionally also the client
+ \item to agree on the version of the TLS
+ \item to have an agreement of the ciphersuites
+ \item to arrange with the extension
+ \item to derive authenticated encryption key for the connection
+ \item if required, to verify the certificates
+ \item finally these all points also have to be assured between each communicators
+\end{itemize}
+
+To protect data, these parameters are then used by the record layer. As mentioned, usually it is only the server which is authenticated, but once a secure channel is established, the mutual authentications may also be carried out. This is permitted with the use of renegotiation, but requires a public key infrastructure (PKI). 
+\cite{ms:overview}
+\cite{ms:handshake}
+
+\section{ChangeCipherSpec Protocol}
+\label{sec:changeciphfer_protocol}
+This protocol is responsible for informing about a change of one set of keys to anoter. It means that a transition in ciphering would be signaled through this protocol. This message is either sent by the server and client. 
+
+This protocol triggers an instruction to the record layer.
+
+The keying material is raw data which is used for encryption between the client and server. On the basis of the exchanged information from the handshake protocol, the keys will be then computed.
+The ChangeCipherSpec Protocol consists of a byte with value 1.
+The ChangeCipherSpec Protocol also includes a message to inform other parties in the SSL/TLS session about the change.   \cite{ms:overview}
+
+The ChangeCipherSpec protocol is removed from the 1.3 version of the TLS protocol.
+
+\section{Alert Protocol}
+\label{sec:alert_protocol}
+The peer will be notified by the alert messages about the change in status or error condition (fatal/warning).These messages are also compressed and encrypted. If a fatal error occurs, the session will close immediately.\\\\ 
+Fatal:
+\begin{itemize}
+	\item unexpected\_message
+	 \item bad\_record\_MAC
+	 \item handshake\_failure 
+	 \item et al.
+\end{itemize}
+	
+Warning:
+\begin{itemize}
+\item close\_notify
+\item unsupported\_certificates
+\item certificate\_expired
+\item et al.
+
+\end{itemize}
+
+The full list of the alerts to notify the peer of normal or error condition is declared in RFC2246 \cite{rfc2246}. All these alerts consists of 2 bytes. The first byte defines the kind (eg. fatal or warning) and the second specifies what happened \cite{W.Stalling} \cite{ms:overview}
 
 \section{Record Protocol}
 \label{sec:record_protocol}
