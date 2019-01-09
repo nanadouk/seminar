@@ -270,12 +270,8 @@ The whole list of the algorithms used in the release 1.3 is shown in table \ref{
 \section{Key derivation funcitons}
 \label{sec:comparison_kdf}
 
-For the key derivation in TLS 1.2 HMAC with SHA256 as pseudo-random function (PRF) is used. The PRF takes the pre-master key as an input for the master key derivation. 
+For the key derivation in TLS 1.2 HMAC with SHA256 as pseudo-random function (PRF) is used. The PRF takes the pre-master key as an input for the master key derivation. \\
 The key derivation funcitons habe been re-desired in TLS 1.3. The HMAC-based Extract-and-Expand Key Derivation Function (HKDF) is used as an underlying primitive \cite{Hassenstein}. It replaces PRF based on HMAC.
-
-\section{Connection renegotiation}
-\label{sec:comparison_renegotiation}
-
 
 
 \section{Comparison: \gls{tls} 1.2 vs 1.3}
@@ -310,11 +306,11 @@ The Table \ref{tab:comparison} illustrates a brief summarized comparison of both
 			Hash algorithms & MD5 & SHA-256 \\
 			& SHA-256 & SHA-384 \\
 			& SHA-384 \\ \midrule
-			Key derivation & PRF based on HMAC & HKDF-Extract and HKDF-Expand functions \\ \midrule
+			Key derivation & PRF based on HMAC & HKDF-Extract and \\
+			& & HKDF-Expand functions \\ \midrule
 			Compression & Yes & No \\ \midrule
 			Renegotiation & Yes & No \\ \midrule
-			
-
+		
 		\end{tabular}
 	\caption{Comparison of \gls{tls} 1.2 and \gls{tls} 1.3}
 	\label{tab:comparison}
