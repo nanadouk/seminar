@@ -159,8 +159,9 @@ The client can transmit the data to the server immediately in the first step tog
 
 \subsection{Discussion of the session resumption in TLS 1.2 and 1.3}
 \label{subsec:discussion_resumption}
+Though the performance of the session resumption in TLS 1.2 is very fast, it can lead to some security problems. Using the same session id during the resumption the same master secret is used. In case of compromised master key all resumed session will be revealed.
 
-Though the performance of the session resumption in TLS 1.2 is very fast, it can lead to some security problems. Using the same session id during the resumption the same master secret is used. In case compromised master key all resumed session will be revealed.
+Using 0-RTT handshake in TLS 1.3 does not provide perfect forward secrecy. It does also not protect against replay attack in the contrary to 1-RTT where the server transmits a random value in each handshake.
 
 Using 0-RTT handshake in TLS 1.3 does not provide a perfect forward secrecy. It does also not protect against replay attack in the contrary to 1-RTT, where the server transmits a random value in each handshake.
 \cite{recorla}
@@ -268,7 +269,7 @@ The whole list of the algorithms used in the release 1.3 is shown in table \ref{
 \section{Connection renegotiation}
 \label{sec:comparison_renegotiation}
 
-\section{Comparison TLS 1.2 vs 1.3}
+\section{Comparison: TLS 1.2 vs 1.3}
 \label{sec:comparison}
 
 The Table \ref{tab:comparison} illustrates a brief summarized comparison of both versions of TLS.
@@ -277,7 +278,7 @@ The Table \ref{tab:comparison} illustrates a brief summarized comparison of both
 	\centering
 		\begin{tabular}{lll} \toprule
 			\textbf{Characteristic} & \textbf{TLS 1.2} & \textbf{TLS 1.3} \\ \midrule
-			Round trip time of the full handshake & 2-RTT & 1-RTT \\ \midrule
+			Round trip time of the full handshake & 2-\gls{rtt} & 1-RTT \\ \midrule
 			Encryption of handshake messages & at the end, & at the beginning, \\ 
 			& from "client finished" message & after "server hello" message \\ \midrule
 			Performance of the full handshake & 0.25-0.5 s & 0.2-0.3 s\\ \midrule
