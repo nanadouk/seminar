@@ -10,7 +10,7 @@ Further, the integrity check value implemented in the protocol provides integrit
 To use TLS all communicators must know that the other is supporting TLS.
 
 TLS 1.2 was defined in RFC 5246 in August 2008. Its successor TLS 1.3 is defined in RFC 8446 in August 2018.
- \cite{RFC5246}
+ \cite{RFC5246}\cite{ms:overview}
 
 \section{Structure of the TLS Protocol}
 \label{sec:stucture}
@@ -18,7 +18,7 @@ TLS 1.2 was defined in RFC 5246 in August 2008. Its successor TLS 1.3 is defined
 The TLS Protocol is layered between the Application layer and the TCP/IP layer according to the Internet Model (or between Session and Transport layers according to the OSI Model), where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols, such as HTTP, FTP, SMTP, POP3. The protocols using TLS become respectively HTTPS, FTPS, SMTPS, POP3S and so on.
 
 The TLS Protocol can be split into two layers. The lower layer of the TLS is the Record Protocol. The upper layer is the Handshake layer which consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol and Alert Protocol. Figure \ref{fig:tls_structure} illustrates the structure of the TLS Protocol. 
-
+\cite{tlsstrukt}
 
 \begin{figure}[H]
 	\centering
@@ -36,7 +36,7 @@ The TLS Protocol can be split into two layers. The lower layer of the TLS is the
  \begin{itemize}
 \item to authenticate the server and optionally also the client
  \item to agree on the version of the TLS
- \item to have an agreement of the ciphersuites
+ \item to have an agreement of the cipher suites
  \item to arrange with the extension
  \item to derive authenticated encryption key for the connection
  \item if required, to verify the certificates
@@ -49,7 +49,7 @@ To protect data, these parameters are then used by the record layer. As mentione
 
 \section{ChangeCipherSpec Protocol}
 \label{sec:changeciphfer_protocol}
-This protocol is responsible for informing about a change of one set of keys to anoter. It means that a transition in ciphering would be signaled through this protocol. This message is either sent by the server and client. 
+This protocol is responsible for informing about a change of one set of keys to another. It means that a transition in ciphering would be signaled through this protocol. This message is either sent by the server and client. 
 
 This protocol triggers an instruction to the record layer.
 
@@ -58,7 +58,7 @@ The ChangeCipherSpec Protocol consists of a byte with value 1.
 The ChangeCipherSpec Protocol also includes a message to inform other parties in the SSL/TLS session about the change.   \cite{ms:overview}
 
 The ChangeCipherSpec protocol is removed from the 1.3 version of the TLS protocol.
-
+\cite{WikipediaCipher}
 \section{Alert Protocol}
 \label{sec:alert_protocol}
 The peer will be notified by the alert messages about the change in status or error condition (fatal/warning).These messages are also compressed and encrypted. If a fatal error occurs, the session will close immediately.
@@ -92,7 +92,7 @@ The responsibilities of the Record Protocol are:
 	\item application of MAC and encryption
 	\item transmisson 
 \end{itemize}
-But the tasks/responsiblies depend also on the parameters of the keys, namely how the keys were set during the handshake protocol. \\
+But the tasks/responsibilities depend also on the parameters of the keys, namely how the keys were set during the handshake protocol. \\
 The processing of data is illustrated and described below:      
 
 \begin{figure}[H]
@@ -110,4 +110,4 @@ To ensure that the data were not altered during the transmission, the MAC value 
 match. Thus, the integrity and confidentiality are ensured.
 
 As a hint, the first handshake is neither secured by a MAC nor encrypted. Because this is the initial value for the keys, it is how they are first set. After the first handshake these parameters are set and therefore secured and encrypted.
-\cite{ms:Record}
+\cite{ms:Record} \cite{Hassenstein}
