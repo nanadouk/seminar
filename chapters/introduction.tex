@@ -15,10 +15,9 @@ To use \gls{tls} all communicators must know that the other is supporting \gls{t
 \section{Structure of the \gls{tls} Protocol}
 \label{sec:stucture}
 
-The \gls{tls} Protocol is layered between the Application layer and the \gls{tcp}/\gls{ip} layer according to the Internet Model (or between Session and Transport layers according to the gls{osi} Model) where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols such as \gls{http}, \gls{ftp}, \gls{smtp} or \gls{pop}. The protocols using \gls{tls} become respectively \gls{https}, \gls{ftps}, \gls{smtps}, \gls{pops} and so on.
+The \gls{tls} Protocol is layered between the Application layer and the \gls{tcp}/\gls{ip} layer according to the Internet Model (or between Session and Transport layers according to the \gls{osi} Model) where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols such as \gls{http}, \gls{ftp}, \gls{smtp} or \gls{pop}. The protocols using \gls{tls} become respectively \gls{https}, \gls{ftps}, \gls{smtps}, \gls{pops} and so on.
 
-The \gls{tls} Protocol can be split into two layers. The lower layer of the \gls{tls} is the Record Protocol. The upper layer is the Handshake layer which consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol and Alert Protocol. Figure \ref{fig:tls_structure} illustrates the structure of the \gls{tls} Protocol. 
-\cite{tlsstrukt}
+The \gls{tls} Protocol can be split into two layers. The lower layer of the \gls{tls} is the Record Protocol. The upper layer is the Handshake layer which consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol and Alert Protocol. ChangeCipherSpec has been removed from the 1.3 version. Figure \ref{fig:tls_structure} illustrates the structure of the \gls{tls} Protocol. \cite{tlsstrukt}
 
 \begin{figure}[H]
 	\centering
