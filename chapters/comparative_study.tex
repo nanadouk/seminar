@@ -1,22 +1,22 @@
 \chapter{Comparative Study}
 \label{chap:comparative_study}
 
-The version 1.2 of the TLS protocol was defined in RFC5246 in August 2008 und has been in use many years. With the release of TLS 1.3 in August 2018 some security and speed improvements of the protocol have been implemented. The TLS 1.3 is defined in RFC8446. In the following chapters the changes and differences of both TLS releases are examinated and discussed.
+The version 1.2 of the \gls{tls} protocol was defined in \gls{rfc}5246 in August 2008 und has been in use many years. With the release of \gls{tls} 1.3 in August 2018 some security and speed improvements of the protocol have been implemented. The \gls{tls} 1.3 is defined in \gls{rfc}8446. In the following chapters the changes and differences of both \gls{tls} releases are examinated and discussed.
 
 \section{Handshake}
 \label{sec:comparison_handshake}
 
-As described in the chapter \ref{sec:handshake_protocol} the Handshake begins after the establishment of the TCP connection between client and server. The goals of the handshake protocol are to authenticate the server and, optionally, the client; negotiate protocol version, ciphersuites and extensions; derive authencticated encryption keys for the secure connection; ensure agreement on all negotiated parameters. \cite{Hassenstein}
+As described in the chapter \ref{sec:handshake_protocol} the Handshake begins after the establishment of the \gls{tcp} connection between client and server. The goals of the handshake protocol are to authenticate the server and, optionally, the client; negotiate protocol version, ciphersuites and extensions; derive authencticated encryption keys for the secure connection; ensure agreement on all negotiated parameters. \cite{Hassenstein}
 
-\subsection{TLS 1.2 handshake}
+\subsection{\gls{tls} 1.2 handshake}
 \label{subsec:handshake1_2}
 
-The figure \ref{fig:handshake1_2} shows the process of the full handshake in the TLS protocol 1.2 for simplicity only with authentication of the server. There will be more steps of the handshake in case of the mutual authentication when the client must be also authenticated by the server.
+The figure \ref{fig:handshake1_2} shows the process of the full handshake in the \gls{tls} protocol 1.2 for simplicity only with authentication of the server. There will be more steps of the handshake in case of the mutual authentication when the client must be also authenticated by the server.
 
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=0.35]{images/handshake1_2.png}
-	\caption{TLS 1.2 full handshake \cite{sslstore:handshake}}
+	\caption{\gls{tls} 1.2 full handshake \cite{sslstore:handshake}}
 	\label{fig:handshake1_2}
 \end{figure}
 
@@ -49,34 +49,34 @@ At this point the client and the server can compute pre-master secret from key e
 
 \textbf{Step 7.} Wenn the client derived the session key it notify the server about the change of the keys for the secure communication.
 
-\textbf{Step 8.} With the message "Finished" the client signals to the server that it completed its tasks and is ready for the communication. This message includes MAC of the messages from the previous steps using the calculated master key, so that the server can verify integrity of the handshake's messages.
+\textbf{Step 8.} With the message "Finished" the client signals to the server that it completed its tasks and is ready for the communication. This message includes \gls{mac} of the messages from the previous steps using the calculated master key, so that the server can verify integrity of the handshake's messages.
 
-\textbf{Step 9-10.} The server makes the same steps as the client in the steps 7-8 to switch the keys for the symmetric encryption and notifies the client with the message "finished". This message includes the MAC of the whole handshake log except "change cipher spec" messages from the steps 7 and 9. \cite{sslstore:handshake}\cite{Hassenstein}
+\textbf{Step 9-10.} The server makes the same steps as the client in the steps 7-8 to switch the keys for the symmetric encryption and notifies the client with the message "finished". This message includes the \gls{mac} of the whole handshake log except "change cipher spec" messages from the steps 7 and 9. \cite{sslstore:handshake}\cite{Hassenstein}
 
 The almost whole communication in the handshake protocol flows in the clear text. Only beginning from the step 8, when the client finished his preparation for the secure communication, the next messages of the handshake will be encrypted.
 
-\subsection{TLS 1.3 handshake}
+\subsection{\gls{tls} 1.3 handshake}
 \label{subsec:handshake1_3}
 
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=0.35]{images/handshake1_3.jpg}
-	\caption{TLS 1.3 full handshake \cite{sslstore:handshake}}
+	\caption{\gls{tls} 1.3 full handshake \cite{sslstore:handshake}}
 	\label{fig:handshake1_3}
 \end{figure}
 
-\textbf{Step 1.} The TLS 1.3 handshake begins with the "client hello" message as in the TLS 1.2 handshake. In addition the client sends in the same message the following information:
+\textbf{Step 1.} The \gls{tls} 1.3 handshake begins with the "client hello" message as in the \gls{tls} 1.2 handshake. In addition the client sends in the same message the following information:
 
 \begin{itemize}
 	\item the list of the supported CypherSuites
-	\item key share entries consisting of a named (EC)DH group and an ephemeral public key
+	\item key share entries consisting of a named \gls{ecdh} group and an ephemeral public key
 \end{itemize}
 
 \textbf{Step 2.} The server respondes with the "server hello" message. In addition it sends the following information:
 
 \begin{itemize}
 	\item chosen CypherSuite
-	\item key share entries consisting of the chosen (EC)DH group and its public key
+	\item key share entries consisting of the chosen \gls{ecdh} group and its public key
 	\item the certificate of the server
 	\item "certificate verify" message containing a hash of all previous handshake messages signed with the private key of the server. The client afterwards verifies the signature with the public key from the server's certificate. 
 	\item "server finished" message
@@ -88,37 +88,37 @@ In case if the server does not support any of the proposed groups the server wil
 
 After the "server hello" message all handshake messages will be encrypted.
 
-\subsection{Discussion of TLS 1.2 and 1.3 full handshakes (todo: change title)}
+\subsection{Discussion of \gls{tls} 1.2 and 1.3 full handshakes (todo: change title)}
 \label{subsec:comparison_handshake}
 
-The TLS 1.2 handshake takes two round trips between the client and the server to complete the handshake. On average, this process requires 0.25 to 0.5 seconds.
+The \gls{tls} 1.2 handshake takes two round trips between the client and the server to complete the handshake. On average, this process requires 0.25 to 0.5 seconds.
 
-The "server key exchange" and "client key exchange" messages have been removed from the TLS 1.3 handshake. The key exchange parameters and public keys will be sent in the key share extensions, that are added to the "client hello" and "server hello" messages. This keeps the 1.3 release compatible with the 1.2 version because the order of messages remains.
+The "server key exchange" and "client key exchange" messages have been removed from the \gls{tls} 1.3 handshake. The key exchange parameters and public keys will be sent in the key share extensions, that are added to the "client hello" and "server hello" messages. This keeps the 1.3 release compatible with the 1.2 version because the order of messages remains.
 
 Furthermore the ChangeCipherSpec protocol has been removed in the 1.3 version. 
 
-As a consequence of this the TLS 1.3 handshake involves only one round trip. This changes results in reduced latency almost in half. As mentioned in the blog of The SSL Store a delay of half a second results in 20\% traffic decline \cite{sslstore:handshake}. That is why the performance improvement of the TLS protocol is a crucial change in the protocol.
+As a consequence of this the \gls{tls} 1.3 handshake involves only one round trip. This changes results in reduced latency almost in half. As mentioned in the blog of The \gls{ssl} Store a delay of half a second results in 20\% traffic decline \cite{sslstore:handshake}. That is why the performance improvement of the \gls{tls} protocol is a crucial change in the protocol.
 
-Moreover the privace of the handshake protocol has been improved. In the 1.2 release of the TLS protocol almost all handshake messages are sent in the clear text except the last steps after the client sends "finished" message. On the contrary in the 1.3 version all information will be encrypted as early as possible, namely after "server hello" message. 
+Moreover the privace of the handshake protocol has been improved. In the 1.2 release of the \gls{tls} protocol almost all handshake messages are sent in the clear text except the last steps after the client sends "finished" message. On the contrary in the 1.3 version all information will be encrypted as early as possible, namely after "server hello" message. 
 
 \section{Session resumption}
 \label{sec:comparison_resumption}
 
-The full handshake can take time, increase server load and cause connection latency. To improve performance the session resumption can be used. With the "client hello" and "server hello" messages the session id can be saved and used to resume previously established TLS session. Under this session id the client and the server store the master key and other details of the connection. In the next session they can transmit the session id and thus reuse past connection parameters. The following session data can be cached: master secret, protocol version, ciphersuits, compression method, certificate. Because the session resumption is efficient it is supported per dafault in all major web browsers and web servers. But if it is not correctly implemented that can lead to vulnerabilities.
+The full handshake can take time, increase server load and cause connection latency. To improve performance the session resumption can be used. With the "client hello" and "server hello" messages the session id can be saved and used to resume previously established \gls{tls} session. Under this session id the client and the server store the master key and other details of the connection. In the next session they can transmit the session id and thus reuse past connection parameters. The following session data can be cached: master secret, protocol version, ciphersuits, compression method, certificate. Because the session resumption is efficient it is supported per dafault in all major web browsers and web servers. But if it is not correctly implemented that can lead to vulnerabilities.
 
-\subsection{Session resumption in TLS 1.2}
+\subsection{Session resumption in \gls{tls} 1.2}
 \label{subsec:resumption1_2}
 
-The client and the server can set up a new connection by reusing the master key from the recent session cached on both ends in the one rount-trip handshake. This kind of handshake is called abbreviated TLS handshake. The figure \ref{fig:resumption1_2} illustrates the process of the abbreviated handshake for the session resumption in the TLS 1.2.
+The client and the server can set up a new connection by reusing the master key from the recent session cached on both ends in the one rount-trip handshake. This kind of handshake is called abbreviated \gls{tls} handshake. The figure \ref{fig:resumption1_2} illustrates the process of the abbreviated handshake for the session resumption in the \gls{tls} 1.2.
 
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=0.85]{images/resumption1_2.png}
-	\caption{Abbreviated Handshake for Session Resumption in TLS 1.2 \cite{Hassenstein}}
+	\caption{Abbreviated Handshake for Session Resumption in \gls{tls} 1.2 \cite{Hassenstein}}
 	\label{fig:resumption1_2}
 \end{figure}
 
-In the "client hello" message the client sends to the server the session id from which the connection parameter can be used. As well a new random value (nonce) should be transmitted by the client. If the session has been cached the server respons in the "server hello" message with a new nonce and the same CipherSuites as in the previous handshake. Without waiting for the client's answer the server immediatly notifies the client about the changes of the key with the ChangeCipherSpec message and finishes its part of the handshake with MAC of the abbreviated handshake log in the encrypted "server finished" message. The client answers with its notification about the change of the key and completes the handshakes process with the "client finished" message containing a MAC of the whole abbreviated handshake log with the exception of ChangeCipherSpec messages. The both parties use the master key from the previous handshake and the new nonces to derive a set of session keys for the symmetric encryption of their communication.
+In the "client hello" message the client sends to the server the session id from which the connection parameter can be used. As well a new random value (nonce) should be transmitted by the client. If the session has been cached the server respons in the "server hello" message with a new nonce and the same CipherSuites as in the previous handshake. Without waiting for the client's answer the server immediatly notifies the client about the changes of the key with the ChangeCipherSpec message and finishes its part of the handshake with \gls{mac} of the abbreviated handshake log in the encrypted "server finished" message. The client answers with its notification about the change of the key and completes the handshakes process with the "client finished" message containing a \gls{mac} of the whole abbreviated handshake log with the exception of ChangeCipherSpec messages. The both parties use the master key from the previous handshake and the new nonces to derive a set of session keys for the symmetric encryption of their communication.
 
 The session resumption is also possible with the session ticket. In this case the client transmits the session ticket in the "client hello" message instead of the session id. The session ticket is a blob file created by the server and stored on the client side. This file contains all necessary detail of a connection and is encrypted with the key only known to the server. After the decryption of the ticket by the server the master key will be resumed for the derivation of session keys.
 
@@ -127,46 +127,46 @@ Figure \ref{fig:without-with-resume-1_2} demonstrates the efficiency of the sess
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=0.4]{images/without-with-resume-1_2.png}
-	\caption{Full TLS handshake vs. abbreviated TLS handshake \cite{cloudflare:resume}}
+	\caption{Full \gls{tls} handshake vs. abbreviated \gls{tls} handshake \cite{cloudflare:resume}}
 	\label{fig:without-with-resume-1_2}
 \end{figure}
 
-\subsection{Session resumption in TLS 1.3}
+\subsection{Session resumption in \gls{tls} 1.3}
 \label{subsec:resumption1_3}
 
-There are differences how the sesssion resumption works in the release 1.3 of TLS. Figure \ref{fig:resumption1_3} illustrates the process of the handshake for the session resumption in TLS 1.3.
+There are differences how the sesssion resumption works in the release 1.3 of \gls{tls}. Figure \ref{fig:resumption1_3} illustrates the process of the handshake for the session resumption in \gls{tls} 1.3.
 
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=0.8]{images/resumption1_3.png}
-	\caption{Handshake for Session Resumption in TLS 1.3 \cite{Hassenstein}}
+	\caption{Handshake for Session Resumption in \gls{tls} 1.3 \cite{Hassenstein}}
 	\label{fig:resumption1_3}
 \end{figure}
 
-A new method to resume the session is implemented in TLS 1.3. It is called pre-shared key (PSK) mode and replaces the usage of the session identifier or session ticket. An PSK identity is sent to the client by the server after the full handshake is completed. The PSK identity is a blob file containing database lookup keys or self-encrypted and self-authencitcated values. It corresponds to a key derived from the handshake.
+A new method to resume the session is implemented in \gls{tls} 1.3. It is called pre-shared key (\gls{psk}) mode and replaces the usage of the session identifier or session ticket. An \gls{psk} identity is sent to the client by the server after the full handshake is completed. The \gls{psk} identity is a blob file containing database lookup keys or self-encrypted and self-authencitcated values. It corresponds to a key derived from the handshake.
 
-A PSK, that has been created during the handshake of the prevoius connection, can be presented by the client on the next visit. If it is needed to resume the session the client transmits PSK identities to the server. Then the server responds with the chosen PSK identity in the "server hello" message. The security context of this identity will be used in the new connection and the unique key derived from the previous connection can be used in the new one. 
-The client can transmit the data to the server immediately in the first step together with the PSK. The data will be encrypted with the key derived from this PSK.\cite{ldapwiki:resumption}
+A \gls{psk}, that has been created during the handshake of the prevoius connection, can be presented by the client on the next visit. If it is needed to resume the session the client transmits \gls{psk} identities to the server. Then the server responds with the chosen \gls{psk} identity in the "server hello" message. The security context of this identity will be used in the new connection and the unique key derived from the previous connection can be used in the new one. 
+The client can transmit the data to the server immediately in the first step together with the \gls{psk}. The data will be encrypted with the key derived from this \gls{psk}.\cite{ldapwiki:resumption}
 
-\subsection{Discussion of the session resumption in TLS 1.2 and 1.3}
+\subsection{Discussion of the session resumption in \gls{tls} 1.2 and 1.3}
 \label{subsec:discussion_resumption}
 
-Though the performance of the session resumtion in TLS 1.2 is very fast, it can lead to some security problems. Using the same session id during the resumtion the same master secret is used. In case of compromised master key all resumed session will be revealed.
+Though the performance of the session resumtion in \gls{tls} 1.2 is very fast, it can lead to some security problems. Using the same session id during the resumtion the same master secret is used. In case of compromised master key all resumed session will be revealed.
 
-Using 0-RTT handshake in TLS 1.3 does not provide perfect forward secrecy. It does also not protect against replay attack in the contrary to 1-RTT where the server transmits a random value in each handshake.
+Using 0-\gls{rtt} handshake in \gls{tls} 1.3 does not provide perfect forward secrecy. It does also not protect against replay attack in the contrary to 1-\gls{rtt} where the server transmits a random value in each handshake.
 
 
 \section{Cipher suites}
 \label{sec:comparison_ciphersuits}
 
-A ciphersuite contains of the key exchange and authentication algorithms for the handshake, encryption and message authentication code (MAC) algorithm for the record protocol. The ciphersuite contains different combinations of these algorithms.
+A ciphersuite contains of the key exchange and authentication algorithms for the handshake, encryption and \gls{mac} algorithm for the record protocol. The ciphersuite contains different combinations of these algorithms.
 
-\subsection{Cipher suites in TLS 1.2}
+\subsection{Cipher suites in \gls{tls} 1.2}
 \label{subsec:ciphersuits1_2}
 
-In the following the ciphersuites for key exchange and authentication in TLS 1.2 are described.
+In the following the ciphersuites for key exchange and authentication in \gls{tls} 1.2 are described.
 
-\subsubsection*{TLS\_RSA (Static RSA)} 
+\subsubsection*{TLS\_RSA (Static \gls{rsa})} 
 The key exchange is based on the key transport with RSA public-private keys.
 If this cipersuite is used the following computations and communications are made during the handshake:
 \begin{itemize}
@@ -180,23 +180,23 @@ The keyEncipherment option must be enabled in the key usage extension of the cer
 This ciphersuite does not offer perfect forward secrecy. If an adversary gets the private key of the server, he can decrypt the pre-master sercret from the client, compute all session keys and decrypt the whole communication with them.
 
 \subsubsection*{DH\_RSA/DH\_DSS}
-The fixed Diffie-Hellman is used for the key exchange. The certificate of the server contains the DH public key and signed with RSA or DSS.
+The fixed Diffie-Hellman is used for the key exchange. The certificate of the server contains the \gls{dh} public key and signed with \gls{rsa} or \gls{dss}.
 The keyAgreement flag must be enabled in the key usage extension of the certificate.
 
 The following computations are made during the handshake:
 \begin{itemize}
 	\item The "server key exchange" message in the step 4 of the full handshake is not used.
-	\item The client transmits in the "client key exchange" message in the step 6 its value for DH exchange: \\ $\displaystyle kex_c = g^c \bmod p $ 
+	\item The client transmits in the "client key exchange" message in the step 6 its value for \gls{dh} exchange: \\ $\displaystyle kex_c = g^c \bmod p $ 
 	\item The client and the server compute the pre-master secret as follows: $\displaystyle pms = g^{cs} \bmod p$
 	\item Both parties derive the master secret from the pre-master secret and a set of session keys.
 \end{itemize}
 
 \subsubsection*{DHE\_RSA/DHE\_DSS}
-The key exchange is based on the Ephemeral Diffie-Hellman, and the server authentication - on the RSA/DSS signature.
+The key exchange is based on the Ephemeral Diffie-Hellman, and the server authentication - on the \gls{rsa}/\gls{dss} signature.
 
 The following computations are made during the handshake:
 \begin{itemize}
-	\item The "server key exchange" message is transmited by the server in the step 4. It contains the parameters of a DH group and an ephemeral public key computed by the server. The message is signed with the private key of the server.
+	\item The "server key exchange" message is transmited by the server in the step 4. It contains the parameters of a \gls{dh} group and an ephemeral public key computed by the server. The message is signed with the private key of the server.
 	\item The client verifies the signature of the message with the public key of the server from the server's certfificate.
 	\item The client transmits in the "client key exchange" message in the step 6 its ephemeral public key compatible with the parameters sent by the server.
 	\item The client and the server compute the pre-master secret.
@@ -206,7 +206,7 @@ The following computations are made during the handshake:
 The digitalSignature flag must be enabled in the key usage extension of the servers certificate.
 
 \subsubsection*{ECDHE\_RSA}
-The key exchange is based on the Ephemeral Diffie-Hellman using elliptic curves, and the server authentication - on the RSA/DSS signature.
+The key exchange is based on the Ephemeral Diffie-Hellman using elliptic curves, and the server authentication - on the \gls{rsa}/\gls{dss} signature.
 
 The following computations are made during the handshake:
 \begin{itemize}
@@ -235,17 +235,17 @@ Cipher suits for symmetric encryption:
 
 
 
-\subsection{Cipher suites in TLS 1.3}
+\subsection{Cipher suites in \gls{tls} 1.3}
 \label{subsec:ciphersuits1_3}
 
 The ciphersuite concept has been changed to separate the authentication and key exchange mechanisms.
-For the key exchange in TLS 1.3 only DHE and ECDHE are used providing the perfect forward secrecy. Five elliptic curve groups and five DHE groups from Galois field are predefined, that eliminites the risk of the unsecure implementation of TLS by the administrators and developers.
+For the key exchange in \gls{tls} 1.3 only \gls{dhe} and \gls{ecdhe} are used providing the perfect forward secrecy. Five elliptic curve groups and five DHE groups from Galois field are predefined, that eliminites the risk of the unsecure implementation of \gls{tls} by the administrators and developers.
 
-The following signature algorithms remain: EdDSA (Edwards-curve Digital Signature Algorithm),
-ECDSA (Elliptic Curve Digital Signature Algorithm) and RSA.
+The following signature algorithms remain: \gls{eddsa} (Edwards-curve Digital Signature Algorithm),
+\gls{ecdsa} (Elliptic Curve Digital Signature Algorithm) and RSA.
 
-The list of supported symmetric algorithms has been reduced to Authenticated Encryption with Associated Data (AEAD) algorithms.
-The weak cryptographic algorithms has been deprecated, such that using static RSA in the key exchange, RC4 stream cipher, MD5 and SHA-1 hash functions. The compresson of the plaintext bevor the applying of MAC is removed.
+The list of supported symmetric algorithms has been reduced to Authenticated Encryption with Associated Data (\gls{aead}) algorithms.
+The weak cryptographic algorithms has been deprecated, such that using static \gls{rsa} in the key exchange, \gls{rc} stream cipher, MD5 and SHA-1 hash functions. The compresson of the plaintext bevor the applying of \gls{mac} is removed.
 The whole list of used algorithms in the release 1.3 is shown in Table \ref{tab:comparison}.
 
 \section{Key derivation funcitons}
@@ -262,7 +262,7 @@ Table \ref{tab:comparison} illustrates the short comparison of the both versions
 \begin{table}[H]
 	\centering
 		\begin{tabular}{lll} \toprule
-			\textbf{Characteristic} & \textbf{TLS 1.2} & \textbf{TLS 1.3} \\ \midrule
+			\textbf{Characteristic} & \textbf{\gls{tls} 1.2} & \textbf{\gls{tls} 1.3} \\ \midrule
 			Round trip time of the full handshake & 2-\gls{rtt} & 1-RTT \\ \midrule
 			Encryption of handshake messages & at the end, & at the beginning, \\ 
 			& from "client finished" message & after "server hello" message \\ \midrule
@@ -290,7 +290,7 @@ Table \ref{tab:comparison} illustrates the short comparison of the both versions
 			
 
 		\end{tabular}
-	\caption{Comparison of TLS 1.2 and TLS 1.3}
+	\caption{Comparison of \gls{tls} 1.2 and \gls{tls} 1.3}
 	\label{tab:comparison}
 \end{table}
 
