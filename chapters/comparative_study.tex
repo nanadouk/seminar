@@ -18,7 +18,7 @@ As described in the chapter \ref{sec:handshake_protocol} the Handshake begins af
 \subsection{\gls{tls} 1.2 handshake}
 \label{subsec:handshake1_2}
 
-The figure \ref{fig:handshake1_2} shows the process of the full handshake in the \gls{tls} protocol 1.2 for simplicity only with authentication of the server. There will be more steps of the handshake in the case of the mutual authentication when the client must be also authenticated by the server.
+The figure \ref{fig:handshake1_2} shows the process of the full handshake in the \gls{tls} protocol 1.2 for simplicity only with authentication of the server. There will be more steps of the handshake in the case of mutual authentication when the client must also be authenticated by the server.
 
 \begin{figure}[H]
 	\centering
@@ -60,7 +60,7 @@ At this point the client and the server can compute a pre-master secret from key
 
 \textbf{Step 9-10.} The server makes the same steps as the client in the steps 7-8 to switch the keys for the symmetric encryption and notifies the client with the message "finished". This message includes the \gls{mac} of the whole handshake log except "change cipher spec" messages from the steps 7 and 9. \cite{sslstore:handshake}\cite{Hassenstein}
 
-Almost the whole communication in the handshake protocol flows in the clear text. Only beginning from the step 8, when the client has finished its preparation for the secure communication, will the next messages of the handshake be encrypted.
+Almost the whole communication in the handshake protocol flows in the clear text. Only beginning from step 8, when the client has finished its preparation for the secure communication, will the next messages of the handshake be encrypted.
 
 \subsection{\gls{tls} 1.3 handshake}
 \label{subsec:handshake1_3}
@@ -89,7 +89,7 @@ Almost the whole communication in the handshake protocol flows in the clear text
 	\item "server finished" message
 \end{itemize}
 
-In case if the server does not support any of the proposed groups, the server will request to retrying the handshake or will abort the connection with a fatal handshake\_failure alert.
+In case the server does not support any of the proposed groups, the server will request to retry the handshake or will abort the connection with a fatal handshake\_failure alert.
 
 \textbf{Step 3.} The client checks the certificate of the server. It generates keys from the key share of the server from the previous step. Afterwards the client sends the "client finished" message. \cite{Hassenstein}\cite{sslstore:handshake}
 
@@ -98,13 +98,13 @@ After the "server hello" message all handshake messages will be encrypted.
 \subsection{Discussion of \gls{tls} 1.2 and 1.3 full handshakes}
 \label{subsec:comparison_handshake}
 
-The \gls{tls} 1.2 handshake makes two round trips between the client and the server to complete the handshake. On average, this process requires 0.25 to 0.5 seconds.
+The \gls{tls} 1.2 handshake makes two round trips between the client and the server to complete the handshake. On average this process requires 0.25 to 0.5 seconds.
 
 The "server key exchange" and "client key exchange" messages have been removed from the \gls{tls} 1.3 handshake. The key exchange parameters and public keys will be sent in the key share extensions, that are added to the "client hello" and "server hello" messages. This keeps the 1.3 release compatible with the 1.2 version due to the remaining sending-order of messages.
 
 Furthermore, the ChangeCipherSpec protocol has been removed in the 1.3 version. 
 
-As a consequence of this missing protocol, the \gls{tls} 1.3 handshake involves only one round trip. This change results in reduced latency almost by half. As mentioned in the blog of The SSL Store a delay of half a second results in 20\% traffic decline \cite{sslstore:handshake}. That is why the performance improvement of the \gls{tls} protocol is a crucial change in the protocol.
+As a consequence of this missing protocol, the \gls{tls} 1.3 handshake makes only one round trip. This change results in reduced latency almost by half. As mentioned in the blog of The SSL Store a delay of half a second results in 20\% traffic decline \cite{sslstore:handshake}. That is why the performance improvement of the \gls{tls} protocol is a crucial change in the protocol.
 
 Moreover, the privacy of the handshake protocol has been improved. In the 1.2 release of the \gls{tls} protocol almost all handshake messages are sent in the clear text except the last steps after the client sends "finished" message. On the contrary in the 1.3 version all information will be encrypted as early as possible, namely after "server hello" message. 
 
