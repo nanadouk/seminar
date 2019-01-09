@@ -6,7 +6,7 @@ The version 1.2 of the \gls{tls} protocol was defined in \gls{rfc}5246 in August
 \section{Handshake}
 \label{sec:comparison_handshake}
 
-As described in the chapter \ref{sec:handshake_protocol} the Handshake begins after the establishment of the TCP connection between client and server. The goals of the handshake protocol are to authenticate the server and, optionally, the client; negotiate protocol version, cipher suites and extensions; derive authenticated encryption keys for the secure connection; ensure agreement on all negotiated parameters. \cite{Hassenstein}
+As described in the chapter \ref{sec:handshake_protocol} the Handshake begins after the establishment of the \gls{tcp} connection between client and server. The goals of the handshake protocol are to authenticate the server and, optionally, the client; negotiate protocol version, cipher suites and extensions; derive authenticated encryption keys for the secure connection; ensure agreement on all negotiated parameters. \cite{Hassenstein}
 
 \subsection{\gls{tls} 1.2 handshake}
 \label{subsec:handshake1_2}
@@ -42,7 +42,7 @@ The figure \ref{fig:handshake1_2} shows the process of the full handshake in the
 
 \textbf{Step 4.} This step is needed if the Diffie-Hellmann key exchange algorithm was negotiated between the client and the server at the steps 1 and 2. In this case the server transmits additional key materials in the "server key exchange" message.
 
-\textbf{Step 5.} With the "server hello done" message the server notify the client that it finished his steps and waits on the answer of the client.
+\textbf{Step 5.} With the "server hello done" message the server notifies the client that it finished his steps and waits on the answer of the client.
 
 \textbf{Step 6.} The client verifies the certificate sent by the server. Then it transmits to the server its key material in the key exchange message. 
 At this point the client and the server can compute pre-master secret from key exchange messages. Using the pre-master secret with the nonces sent in the steps 1 and 2 they can generate the master key. Afterwards the client and the server derive a set of session keys from the master key that will be used to symmetrically encrypt the data.
@@ -88,7 +88,7 @@ In case if the server does not support any of the proposed groups the server wil
 
 After the "server hello" message all handshake messages will be encrypted.
 \cite{recorla}
-\subsection{Discussion of \gls{tls} 1.2 and 1.3 full handshakes (todo: change title)}
+\subsection{Discussion of \gls{tls} 1.2 and 1.3 full handshakes}
 \label{subsec:comparison_handshake}
 
 The \gls{tls} 1.2 handshake takes two round trips between the client and the server to complete the handshake. On average, this process requires 0.25 to 0.5 seconds.
@@ -106,8 +106,7 @@ Moreover, the privacy of the handshake protocol has been improved. In the 1.2 re
 
 The full handshake costs time, increase server load and cause connection latency. For performance improvement the session resumption can be used. With the "client hello" and "server hello" messages the session id can be saved and used to resume the previously established \gls{tls} session. Under this session id the client and the server store the master key and other details of the connection. In the next session they can transmit the session id and thus reuse the connection parameters. The following session data can be cached:
 \begin{itemize}
-\item master 
-\item secret
+\item master secret
 \item protocol version
 \item cipher suits
 \item compression method
