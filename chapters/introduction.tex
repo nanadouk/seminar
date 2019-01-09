@@ -1,41 +1,41 @@
 \chapter{Introduction}
 \label{chap:introduction}
 
-Transport Layer Security (TLS) Protocol is a cryptographic protocol that provides secure transport connection between applications over a computer network, e.g. web server and web browser. 
-Using TLS prevents eavesdropping, tampering and message forgery. It provides privacy and data integrity between communicating applications. The protocol secures transmitted data using encryption. Secure communication with Authenticated Key Etablishment (AKE) and secure channel with Authenticated Encryption (AE). 
-Using Datagram TLS (DTLS) the stateless TLS is feasible. It offers server and, optionally, client authentication to confirm the identities of parties involved in the communication. 
+Transport Layer Security (\gls{tls}) Protocol is a cryptographic protocol that provides secure transport connection between applications over a computer network, e.g. web server and web browser. 
+Using \gls{tls} prevents eavesdropping, tampering and message forgery. It provides privacy and data integrity between communicating applications. The protocol secures transmitted data using encryption. Secure communication with Authenticated Key Etablishment (\gls{ake}) and secure channel with Authenticated Encryption (\gls{ae}). 
+Using Datagram \gls{tls} (\gls{dtls}) the stateless \gls{tls} is feasible. It offers server and, optionally, client authentication to confirm the identities of parties involved in the communication. 
  
-Further, the integrity check value implemented in the protocol provides integrity for the transferred data. TLS is also known or referred to as Secure Socket Layer (SSL), its predecessor. 
+Further, the integrity check value implemented in the protocol provides integrity for the transferred data. \gls{tls} is also known or referred to as Secure Socket Layer (\gls{ssl}), its predecessor. 
  
-To use TLS all communicators must know that the other is supporting TLS.
+To use \gls{tls} all communicators must know that the other is supporting \gls{tls}.
 
-TLS 1.2 was defined in RFC 5246 in August 2008. Its successor TLS 1.3 is defined in RFC 8446 in August 2018.
+\gls{tls} 1.2 was defined in \gls{rfc}5246 in August 2008. Its successor \gls{tls} 1.3 is defined in \gls{rfc}8446 in August 2018.
  \cite{RFC5246}\cite{ms:overview}
 
-\section{Structure of the TLS Protocol}
+\section{Structure of the \gls{tls} Protocol}
 \label{sec:stucture}
 
-The TLS Protocol is layered between the Application layer and the TCP/IP layer according to the Internet Model (or between Session and Transport layers according to the OSI Model), where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols, such as HTTP, FTP, SMTP, POP3. The protocols using TLS become respectively HTTPS, FTPS, SMTPS, POP3S and so on.
+The \gls{tls} Protocol is layered between the Application layer and the TCP/IP layer according to the Internet Model (or between Session and Transport layers according to the OSI Model), where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols, such as HTTP, FTP, SMTP, POP3. The protocols using \gls{tls} become respectively HTTPS, FTPS, SMTPS, POP3S and so on.
 
-The TLS Protocol can be split into two layers. The lower layer of the TLS is the Record Protocol. The upper layer is the Handshake layer which consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol and Alert Protocol. Figure \ref{fig:tls_structure} illustrates the structure of the TLS Protocol. 
+The \gls{tls} Protocol can be split into two layers. The lower layer of the \gls{tls} is the Record Protocol. The upper layer is the Handshake layer which consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol and Alert Protocol. Figure \ref{fig:tls_structure} illustrates the structure of the \gls{tls} Protocol. 
 \cite{tlsstrukt}
 
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=1]{images/tls_structure.jpg}
-	\caption{TLS 1.2 Protocol Structure \cite{ms:overview}}
+	\caption{\gls{tls} 1.2 Protocol Structure \cite{ms:overview}}
 	\label{fig:tls_structure}
 \end{figure}
 
 \section{Handshake Protocol}
 \label{sec:handshake_protocol}
- A handshake is an automated process of negotiation between communicators. The TLS Handshake Protocol is the most widely-used  AKE Protocol to negotiate session information between the client and the server. 
+ A handshake is an automated process of negotiation between communicators. The \gls{tls} Handshake Protocol is the most widely-used \gls{ake} Protocol to negotiate session information between the client and the server. 
  After the establishment of the TCP connection between a client and a server the handshake protocol will be triggered. 
  Thus, the purpose of this protocol is to negotiate and define these parameters:
  
  \begin{itemize}
 \item to authenticate the server and optionally also the client
- \item to agree on the version of the TLS
+ \item to agree on the version of the \gls{tls}
  \item to have an agreement of the cipher suites
  \item to arrange with the extension
  \item to derive authenticated encryption key for the connection
@@ -55,9 +55,9 @@ This protocol triggers an instruction to the record layer.
 
 The keying material is raw data which is used for encryption between the client and server. On the basis of the exchanged information from the handshake protocol, the keys will be then computed.
 The ChangeCipherSpec Protocol consists of a byte with value 1.
-The ChangeCipherSpec Protocol also includes a message to inform other parties in the SSL/TLS session about the change.   \cite{ms:overview}
+The ChangeCipherSpec Protocol also includes a message to inform other parties in the \gls{ssl}/\gls{tls} session about the change.   \cite{ms:overview}
 
-The ChangeCipherSpec protocol is removed from the 1.3 version of the TLS protocol.
+The ChangeCipherSpec protocol is removed from the 1.3 version of the \gls{tls} protocol.
 \cite{WikipediaCipher}
 \section{Alert Protocol}
 \label{sec:alert_protocol}
@@ -79,12 +79,12 @@ Warning:
 
 \end{itemize}
 
-The full list of the alerts to notify the peer of normal or error condition is declared in RFC2246 \cite{rfc2246}. All these alerts consists of 2 bytes. The first byte defines the kind (eg. fatal or warning) and the second specifies what happened \cite{W.Stalling} \cite{ms:overview}
+The full list of the alerts to notify the peer of normal or error condition is declared in \gls{rfc}2246 \cite{rfc2246}. All these alerts consists of 2 bytes. The first byte defines the kind (eg. fatal or warning) and the second specifies what happened \cite{W.Stalling} \cite{ms:overview}
 
 \section{Record Protocol}
 \label{sec:record_protocol}
 
-The connection of two independent channels is established through the TLS Handshake, from the client to the server and in the other direction from the server to the client. The Record Protocol is responsible for the data protection on these channels using the authenticated encryption scheme.\\
+The connection of two independent channels is established through the \gls{tls} Handshake, from the client to the server and in the other direction from the server to the client. The Record Protocol is responsible for the data protection on these channels using the authenticated encryption scheme.\\
 The responsibilities of the Record Protocol are:
 \begin{itemize}
 	\item fragmentation
@@ -98,7 +98,7 @@ The processing of data is illustrated and described below:
 \begin{figure}[H]
 	\centering
 		\includegraphics[scale=0.5]{images/tls_recordprotocol.png}
-	\caption{TLS Record Protocol}
+	\caption{\gls{tls} Record Protocol}
 	\label{fig:tls_recordprotocol}
 \end{figure}
 
