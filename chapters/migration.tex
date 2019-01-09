@@ -1,0 +1,31 @@
+\chapter{Migration from TLS 1.2 to TLS 1.3}
+\label{chap:migration}
+
+To support the usage of the TLS 1.3 protocol the following changes should be made in the Apache configuration file by administrators of a web server:\\
+\begin{enumerate}
+	\item Enable TLS 1.3 in the option“SSLProtocol”. Example of the configuration:
+    \begin{verbatim}
+        SSLProtocol TLSv1.3
+    \end{verbatim}
+    \item Disable if necessary other versions of TLS. Example: 
+    \begin{verbatim}
+        SSLProtocol TLSv1.3 -TLSv1.2
+    \end{verbatim}
+    \item Configure the ciphersuites in the option “SSLCipherSuite”. The following ciphersuites are available in TLS 1.3:
+    \begin{itemize}
+        \item TLS-AES-128-GCM-SHA256
+        \item TLS-AES-256-GCM-SHA384
+        \item TLS-CHACHA20-POLY1305-SHA256
+        \item TLS-AES-128-CCM-SHA256
+    \end{itemize}
+    Example of the configuration:
+    \begin{verbatim}
+        SSLCipherSuite TLS-AES-128-GCM-SHA256:TLS-AES-256-GCM-SHA384:TLS-CHACHA20-POLY1305-SHA256:TLS-AES-128-CCM-SHA256
+    \end{verbatim}
+\end{enumerate}
+
+Respectively the configuration for Nginx:
+\begin{verbatim}
+    ssl\_protocols TLSv1.3;
+    ssl\_ciphers “TLS-AES-128-GCM-SHA256:TLS-AES-256-GCM-SHA384:TLS-CHACHA20-POLY1305-SHA256:TLS-AES-128-CCM-SHA256”;
+\end{verbatim}
