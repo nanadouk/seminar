@@ -1,5 +1,14 @@
 \chapter{Conclusion}
 \label{chap:conclusion}
 
+As conclusion of the gathered information about TLS, its use, the comparison of the new and the prior version and with the experiences of the migration from the older to the newer version, the following can be state:
 
+Why it is important or useful to update to TLS 1.3?
 
+TLS 1.3 always uses perfect forward secrecy (PFS), which means that each session is protected separately, even if any transmission is interrupted. So, there will be no common key. 
+
+The entire round-trip can be avoided because the client now has the possibility to reconnect to a server to which it has been connected before.
+
+The full handshake in TLS 1.2 costs time, increases server load and causes connection latency. This is now minimized.
+
+TLS 1.3 makes only use of the strong ciphers (AES-GCM and ChaCha-Poly), therefore it will be easier to configure applications that are already secured by default.
