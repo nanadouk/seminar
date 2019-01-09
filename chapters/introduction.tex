@@ -1,11 +1,11 @@
 \chapter{Introduction}
 \label{chap:introduction}
-%test
+
 Transport Layer Security (\gls{tls}) Protocol is a cryptographic protocol that provides secure transport connection between applications over a computer network, e.g. web server and web browser. 
-Using \gls{tls} prevents eavesdropping, tampering and message forgery. It provides privacy and data integrity between communicating applications. The protocol secures transmitted data using encryption. Secure communication with Authenticated Key Etablishment (\gls{ake}) and secure channel with Authenticated Encryption (\gls{ae}). 
-Using Datagram \gls{tls} (\gls{dtls}) the stateless \gls{tls} is feasible. It offers server and, optionally, client authentication to confirm the identities of parties involved in the communication. 
+Using \gls{tls} prevents eavesdropping, tampering and message forgery. It provides privacy and data integrity between communicating applications. The protocol secures transmitted data using encryption. Secure communication is enabled with Authenticated Key Etablishment (\gls{ake}) and secure channel with Authenticated Encryption (\gls{ae}). 
+Using Datagram \gls{tls} (\gls{dtls}) the stateless, \gls{tls} is feasible. It offers server and, optionally, client authentication to confirm the identities of parties involved in the communication. 
  
-Further, the integrity check value implemented in the protocol provides integrity for the transferred data. \gls{tls} is also known or referred to as Secure Socket Layer (\gls{ssl}), its predecessor. 
+Furthermore, the integrity check value implemented in the protocol provides integrity for the transferred data. \gls{tls} is also known as Secure Socket Layer (\gls{ssl}), its predecessor. 
  
 To use \gls{tls} all communicators must know that the other is supporting \gls{tls}.
 
@@ -15,7 +15,7 @@ To use \gls{tls} all communicators must know that the other is supporting \gls{t
 \section{Structure of the \gls{tls} Protocol}
 \label{sec:stucture}
 
-The \gls{tls} Protocol is layered between the Application layer and the TCP/IP layer according to the Internet Model (or between Session and Transport layers according to the OSI Model), where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols, such as HTTP, FTP, SMTP, POP3. The protocols using \gls{tls} become respectively HTTPS, FTPS, SMTPS, POP3S and so on.
+The \gls{tls} Protocol is layered between the Application layer and the \gls{tcp}/\gls{ip} layer according to the Internet Model (or between Session and Transport layers according to the gls{osi} Model) where it can secure and then send application data to the transport layer \cite{ms:overview}. Thus it can support multiple application layer protocols such as \gls{http}, \gls{ftp}, \gls{smtp} or \gls{pop}. The protocols using \gls{tls} become respectively \gls{https}, \gls{ftps}, \gls{smtps}, \gls{pops} and so on.
 
 The \gls{tls} Protocol can be split into two layers. The lower layer of the \gls{tls} is the Record Protocol. The upper layer is the Handshake layer which consists of the following protocols: Handshake Protocol, ChangeCipherSpec Protocol and Alert Protocol. Figure \ref{fig:tls_structure} illustrates the structure of the \gls{tls} Protocol. 
 \cite{tlsstrukt}
@@ -30,7 +30,7 @@ The \gls{tls} Protocol can be split into two layers. The lower layer of the \gls
 \section{Handshake Protocol}
 \label{sec:handshake_protocol}
  A handshake is an automated process of negotiation between communicators. The \gls{tls} Handshake Protocol is the most widely-used \gls{ake} Protocol to negotiate session information between the client and the server. 
- After the establishment of the TCP connection between a client and a server the handshake protocol will be triggered. 
+ After the establishment of the \gls{tcp} connection between a client and a server the handshake protocol will be triggered. 
  Thus, the purpose of this protocol is to negotiate and define these parameters:
  
  \begin{itemize}
@@ -40,16 +40,16 @@ The \gls{tls} Protocol can be split into two layers. The lower layer of the \gls
  \item to arrange with the extension
  \item to derive authenticated encryption key for the connection
  \item if required, to verify the certificates
- \item finally these all points also have to be assured between each communicators
+ \item finally all these points have to be assured between each communicators
 \end{itemize}
 
-To protect data, these parameters are then used by the record layer. As mentioned, usually it is only the server which is authenticated, but once a secure channel is established, the mutual authentications may also be carried out. This is permitted with the use of renegotiation, but requires a public key infrastructure (PKI). 
+To protect data, these parameters are then used by the record layer. As mentioned, usually it is only the server which is authenticated, but once a secure channel is established, the mutual authentications may also be carried out. This is permitted with the use of renegotiation but requires a public key infrastructure (\gls{pki}). 
 \cite{ms:overview}
 \cite{ms:handshake}
 
 \section{ChangeCipherSpec Protocol}
 \label{sec:changeciphfer_protocol}
-This protocol is responsible for informing about a change of one set of keys to another. It means that a transition in ciphering would be signaled through this protocol. This message is either sent by the server and client. 
+This protocol is responsible for informing about a change of one set of keys to another. It means that a transition in ciphering would be signaled through this protocol. This message is either sent by the server or the client. 
 
 This protocol triggers an instruction to the record layer.
 
@@ -65,9 +65,9 @@ The peer will be notified by the alert messages about the change in status or er
 Fatal:
 \begin{itemize}
 	\item unexpected\_message
-	 \item bad\_record\_MAC
+	 \item bad\_record\_\gls{mac}
 	 \item handshake\_failure 
-	 \item et al.
+	 \item etc.
 \end{itemize}
 	
 Warning:
@@ -75,11 +75,11 @@ Warning:
 \item close\_notify
 \item unsupported\_certificates
 \item certificate\_expired
-\item et al.
+\item etc.
 
 \end{itemize}
 
-The full list of the alerts to notify the peer of normal or error condition is declared in \gls{rfc}2246 \cite{rfc2246}. All these alerts consists of 2 bytes. The first byte defines the kind (eg. fatal or warning) and the second specifies what happened \cite{W.Stalling} \cite{ms:overview}
+The full list of the alerts to notify the peer of normal or error condition is declared in \gls{rfc}2246 \cite{rfc2246}. All these alerts consist of 2 bytes. The first byte defines the kind (eg. fatal or warning) and the second specifies what happened \cite{W.Stalling} \cite{ms:overview}
 
 \section{Record Protocol}
 \label{sec:record_protocol}
@@ -89,10 +89,10 @@ The responsibilities of the Record Protocol are:
 \begin{itemize}
 	\item fragmentation
 	\item compression
-	\item application of MAC and encryption
+	\item application of \gls{mac} and encryption
 	\item transmisson 
 \end{itemize}
-But the tasks/responsibilities depend also on the parameters of the keys, namely how the keys were set during the handshake protocol. \\
+But the tasks/responsibilities also depend on the parameters of the keys, namely how the keys were set during the handshake protocol. \\
 The processing of data is illustrated and described below:      
 
 \begin{figure}[H]
@@ -106,8 +106,8 @@ First the Record Protocol layer receives the data from the application layer. Th
 The next step is the compression, which is done if specified. The compression algorithm would then be defined in the current session state and would translate the date to a TLSCompressed structure.
  
 Subsequently the message authentication code over the compressed data would be computed.
-To ensure that the data were not altered during the transmission, the MAC value is added. So the receiver can check if the incoming MAC value and the computed one 
+To ensure that the data were not altered during the transmission, the \gls{mac} value is added so the receiver can check if the incoming \gls{mac} value and the computed one 
 match. Thus, the integrity and confidentiality are ensured.
 
-As a hint, the first handshake is neither secured by a MAC nor encrypted. Because this is the initial value for the keys, it is how they are first set. After the first handshake these parameters are set and therefore secured and encrypted.
+What also have to be mentioned is, the first handshake is neither secured by a \gls{mac} nor encrypted. Because this is the initial value for the keys, it is how they are first set. After the first handshake these parameters are set and therefore secured and encrypted.
 \cite{ms:Record} \cite{Hassenstein}
