@@ -174,7 +174,7 @@ A cipher suite contains the key exchange and authentication algorithms for the h
 \subsection{Cipher suites in \gls{tls} 1.2}
 \label{subsec:ciphersuits1_2}
 
-In the following the cipher suite for key exchange and the authentication in \gls{tls} 1.2 are described.
+In the following the cipher suites for key exchange and the authentication in \gls{tls} 1.2 are described.
 
 \subsubsection*{\gls{tls}\_\gls{rsa} (Static \gls{rsa})} 
 The key exchange is based on the key transport with \gls{rsa} public-private keys.
@@ -245,9 +245,10 @@ The following computations are made during the handshake:
 	\item both parties derive the master secret from the pre-master secret and a set of session keys
 \end{itemize}
 
+\subsubsection*{Cipher suites for encryption}
 
-Cipher suite for symmetric encryption:
-
+In the last years many attacks have been performed against commonly used cipher suites and their modes of operation in TLS 1.2. For instance the stream cipher RC4 is used though its weaknesses have been proved and it has been recognized as insecure. There are some attacks against CBC mode of AES encryption if it is not correct implemented.
+The list of stream and block encryption algorithms are presented in Table{tab:comparison}.
 
 
 \subsection{Cipher suites in \gls{tls} 1.3}
@@ -269,8 +270,13 @@ The whole list of the algorithms used in the release 1.3 is shown in table \ref{
 \section{Key derivation funcitons}
 \label{sec:comparison_kdf}
 
+For the key derivation in TLS 1.2 HMAC with SHA256 as pseudo-random function (PRF) is used. The PRF takes the pre-master key as an input for the master key derivation. 
+The key derivation funcitons habe been re-desired in TLS 1.3. The HMAC-based Extract-and-Expand Key Derivation Function (HKDF) is used as an underlying primitive \cite{Hassenstein}. It replaces PRF based on HMAC.
+
 \section{Connection renegotiation}
 \label{sec:comparison_renegotiation}
+
+
 
 \section{Comparison: \gls{tls} 1.2 vs 1.3}
 \label{sec:comparison}
@@ -301,8 +307,10 @@ The Table \ref{tab:comparison} illustrates a brief summarized comparison of both
 			& 3DES & ChaCha20-Poly1305 \\
 			& RC4 \\
 			& Camellia et al.\\ \midrule
-			\gls{mac} algorithms & MD5 & ???HKDF\\
-			& SHA hash functions \\ \midrule
+			Hash algorithms & MD5 & SHA-256 \\
+			& SHA-256 & SHA-384 \\
+			& SHA-384 \\ \midrule
+			Key derivation & PRF based on HMAC & HKDF-Extract and HKDF-Expand functions \\ \midrule
 			Compression & Yes & No \\ \midrule
 			Renegotiation & Yes & No \\ \midrule
 			
